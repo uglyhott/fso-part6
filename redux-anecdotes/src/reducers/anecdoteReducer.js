@@ -26,6 +26,16 @@ export const incrementVote = (id) => {
   }
 }
 
+export const createAnecdote = (anecdote) => {
+  const anecdoteObject = asObject(anecdote)
+  return {
+    type: 'CREATE_ANECDOTE',
+    payload: {
+      ...anecdoteObject
+    }
+  }
+}
+
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -33,14 +43,14 @@ const reducer = (state = initialState, action) => {
     case 'INCREMENT_VOTE': {
       const id = action.payload.id
       const anecdoteToChange = state.find(n => n.id === id)
-      console.log('Anecdote to change: ', anecdoteToChange)
       const updatedAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-      console.log('Updated Anecdote: ', updatedAnecdote)
       return state.map(anecdote => (anecdote.id !== id ? anecdote : updatedAnecdote))
     }
+    case 'CREATE_ANECDOTE':
+      return [...state, action.payload]
     default:
       return state
   }
