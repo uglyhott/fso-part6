@@ -1,5 +1,6 @@
 import { incrementVote } from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { clearMessage, updateMessage } from '../reducers/notificationReducer'
 
 export const AnecdoteList = () => {
   const dispatch = useDispatch()
@@ -7,8 +8,12 @@ export const AnecdoteList = () => {
     return state.filter.value ? state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter.value)) : state.anecdotes
   })
 
-  const vote = (id) => {
-    dispatch(incrementVote(id))
+  const vote = (anecdote) => {
+    dispatch(incrementVote(anecdote.id))
+    dispatch(updateMessage(`You voted '${anecdote.content}'`))
+    setTimeout(() => {
+      dispatch(clearMessage())
+    }, 5000)
   }
 
   const nextAnecdotes = [...anecdotes]
@@ -21,7 +26,7 @@ export const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       ))}
