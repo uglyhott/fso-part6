@@ -5,7 +5,7 @@ import { clearMessage, updateMessage } from '../reducers/notificationReducer'
 export const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => {
-    return state.filter.value ? state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter.value)) : state.anecdotes
+    return state.filter ? state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter)) : state.anecdotes
   })
 
   const vote = (anecdote) => {
